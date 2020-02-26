@@ -17,6 +17,9 @@ app.use(morgan('dev')); //http logging
 app.use(cors()); //enable CORS request
 app.use(express.static('public')); // server files from /public folder
 app.use(express.json()); // enable reading incoming json data
+app.use(express.urlencoded({
+    extended: true
+}));
 // API Routes
 
 //**TOODS **
@@ -44,7 +47,7 @@ app.post('/api/todos', async(req, res) => {
 
     try {
           // the user input lives is req.body.task
-          console.log('|||||||', req.body);
+        console.log('|||||||', req.body);
          // use req.body.task to build a sql query to add a new todo
         // we also return the new todo
 
@@ -71,7 +74,7 @@ app.post('/api/todos', async(req, res) => {
     }
 });
 // this route has a body with a complete property and an id in the params
-app.put('/api/todos/:id', async (req, res) => {
+app.put('/api/todos/:id', async(req, res) => {
 
     try {
         const result = await client.query(`
