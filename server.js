@@ -47,21 +47,16 @@ app.post('/api/todos', async(req, res) => {
 
     try {
           // the user input lives is req.body.task
-        console.log('|||||||', req.body);
+        console.log(req.body);
          // use req.body.task to build a sql query to add a new todo
         // we also return the new todo
 
-        const query = `
-        insert into todos (task, complete)
-        values ('${req.body.task}', false)
-        returning *;
-    `;
         const result = await client.query(`
-            insert into todos (task, complete)
-            values ('${req.body.task}', false)
-            returning *;
-        `,
-        [/* pass in data */]);
+        INSERT INTO todos (task, complete)
+        VALUES ($1, false)
+        RETURNING *;
+    `,
+        [req.body.task]);
 
         // respond to the client request with the newly created todo
         res.json(result.rows[0]);

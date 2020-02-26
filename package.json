@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "test": "exit 0",
     "start": "node server.js",
-    "start:watch": "nodemon --ignore public server.js",
+    "dev": "nodemon --ignore public server.js",
     "create-tables": "node data/create-tables.js",
     "drop-tables": "node data/drop-tables.js",
     "load-seed-data": "node data/load-seed-data.js",
