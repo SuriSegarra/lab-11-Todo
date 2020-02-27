@@ -34,9 +34,6 @@ const authRoutes = createAuthRoutes({
         ).then(result => result.rows[0]);
     },
     insertUser(user, hash) {
-
-        console.log(user);
-
         return client.query(`
             INSERT into users (email, hash)
             VALUES ($1, $2)
@@ -47,6 +44,11 @@ const authRoutes = createAuthRoutes({
     }
 });
 app.use('/api/auth', authRoutes);
+
+// for every route, on every request, make sure there is a token
+const ensureAuth = require('./lib/auth/ensure-auth.js');
+
+app.use('/api', ensureAuth);
 
 //**TOODS **
 // this is /GET request that returns whole list of todos
@@ -78,11 +80,11 @@ app.post('/api/todos', async(req, res) => {
         // we also return the new todo
 
         const result = await client.query(`
-        INSERT INTO todos (task, complete)
-        VALUES ($1, false)
+        INSERT INTO todos (task, complete, user_id)
+        VALUES ($1, false, $2)
         RETURNING *;
     `,
-        [req.body.task]);
+        [req.body.task, req.userId]);
 
         // respond to the client request with the newly created todo
         res.json(result.rows[0]);
