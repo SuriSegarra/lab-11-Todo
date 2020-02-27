@@ -9,6 +9,7 @@ const client = require('./lib/client.js');
 
 //initialize db connection
 client.connect();
+
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
 const createAuthRoutes = require('./lib/auth/create-auth-routes');
@@ -48,7 +49,7 @@ app.use(express.urlencoded({
 
 //**TOODS **
 // this is /GET request that returns whole list of todos
-app.get('/api/todos', async (req, res) => {
+app.get('/api/todos', async(req, res) => {
 
     try {
            // make a sql query using pg.Client() to select * from todos
@@ -101,7 +102,7 @@ app.put('/api/todos/:id', async(req, res) => {
         set complete=${req.body.complete}
         where id = ${req.params.id}
         returning *;
-        `,[/*pass in data*/]);
+        `, [/*pass in data*/]);
 
         res.json(result.rows[0]);
     }
@@ -113,7 +114,7 @@ app.put('/api/todos/:id', async(req, res) => {
     }
 });
 
-app.delete('/api/todos/:id', async (req, res) => {
+app.delete('/api/todos/:id', async(req, res) => {
     // get the id that was passed in the route:
 
     try {

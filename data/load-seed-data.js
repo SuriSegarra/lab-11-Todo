@@ -8,6 +8,13 @@ async function run(){
     try {
         //you make the call. youre fetching
         await client.connect();
+        
+        await client.query(`
+        INSERT INTO users (email, hash)
+        VALUES ($1, $2);
+        `,
+        ['madeemail@email.com', 'someweirdpassword']);
+        
 //you promise the respond when you fetch
         await Promise.all(
             todos.map(todo => {
